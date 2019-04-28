@@ -18,12 +18,13 @@
     <br />
     @Html.LabelFor(m=>m.SecondPassword)
     @Html.PasswordFor(m=>m.SecondPassword)
+    @Html.ValidationMessageFor(m=>m.SecondPassword)
     <br />
     @Html.LabelFor(m=>m.Phone)
     @Html.TextBoxFor(m=>m.Phone)
     <br />
     @Html.LabelFor(m=>m.Email)
-    @Html.TextBoxFor(m=>m.Email)
+    @Html.EditorFor(m=>m.Email)
     <br />
     @Html.ValidationSummary()
 
