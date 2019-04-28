@@ -1,0 +1,24 @@
+﻿@model IssueManagerM.Models.ViewModels.CreateQuestionViewModel
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>新增問題</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.LabelFor(m=>m.Asker)
+    @Html.TextBoxFor(m => m.Asker)
+    <br />
+    @Html.LabelFor(m=>m.AskData)
+    @Html.EditorFor(m=>m.AskData)
+    <br />
+    @Html.LabelFor(m=>m.Title)
+    @Html.TextBoxFor(m => m.Title)
+    <br />
+    @Html.LabelFor(m=>m.Content)
+    @Html.TextBoxFor(m => m.Content)
+    <br />
+    @Html.ValidationSummary()
+    <input type="submit" value="新增問題" />
+}

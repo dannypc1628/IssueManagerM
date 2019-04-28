@@ -3,19 +3,44 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using IssueManagerM.Models;
+using IssueManagerM.Models.ViewModels;
 
 namespace IssueManagerM.Controllers
 {
     public class HomeController : Controller
     {
+        private IssueManagerEntities db = new IssueManagerEntities();
+
         public ActionResult Index()
         {
             return View();
         }
 
-        public ActionResult About()
+        public ActionResult Create()
         {
-            ViewBag.Message = "Your application description page.";
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Create(CreateQuestionViewModel CreateData)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Question.Add(new Question
+                {
+                    Title = CreateData.Title,
+                    Content = CreateData.Content,
+                    Asker = CreateData.Asker,
+                    AskDate = CreateData.AskData,
+                    StateID = 1
+                });
+
+                db.SaveChanges();
+
+                return RedirectToAction("Index");
+
+            }
 
             return View();
         }
