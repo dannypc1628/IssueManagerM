@@ -1,15 +1,17 @@
+
+Create Table [Unit]
+(
+	[UnitID] int PRIMARY KEY IDENTITY(1,1),
+	[UnitName] nvarchar(10) NOT NULL UNIQUE
+)
 Create Table [User]
 (
 	[UserID] nchar(10) PRIMARY KEY NOT NULL,
 	[UserName] nvarchar(10) NOT NULL ,
 	[Password] nchar(10) NOT NULL,
 	[Phone] nchar(10) NOT NULL,
-	[Email] nvarchar(50) NOT NULL
-)
-Create Table [Unit]
-(
-	[UnitID] int PRIMARY KEY IDENTITY(1,1),
-	[UnitName] nvarchar(10) NOT NULL UNIQUE
+	[Email] nvarchar(50) NOT NULL,
+	[UnitID] int references [Unit](UnitID)
 )
 Create Table [ParentUnit]
 (

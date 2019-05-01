@@ -12,7 +12,7 @@ namespace IssueManagerM.Controllers
     [Authorize]
     public class HomeController : Controller
     {
-        private IssueManagerEntities db = new IssueManagerEntities();
+        private IssueManagerEntities1 db = new IssueManagerEntities1();
 
         public ActionResult Index()
         {
@@ -46,7 +46,7 @@ namespace IssueManagerM.Controllers
 
             return View();
         }
-
+                
         public ActionResult Contact()
         {
             ViewBag.Message = "Your contact page.";

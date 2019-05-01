@@ -37,7 +37,8 @@ namespace IssueManagerM
             }
 
             // retrieve roles from UserData
-            string[] roles = authTicket.UserData.Split(';');
+            string[] UnitAndRoles = authTicket.UserData.Split(';');
+            string[] roles = UnitAndRoles[1].Split(',');
 
             if (Context.User != null)
                 Context.User = new GenericPrincipal(Context.User.Identity, roles);

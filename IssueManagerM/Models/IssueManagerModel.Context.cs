@@ -13,10 +13,10 @@ namespace IssueManagerM.Models
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class IssueManagerEntities : DbContext
+    public partial class IssueManagerEntities1 : DbContext
     {
-        public IssueManagerEntities()
-            : base("name=IssueManagerEntities")
+        public IssueManagerEntities1()
+            : base("name=IssueManagerEntities1")
         {
         }
     

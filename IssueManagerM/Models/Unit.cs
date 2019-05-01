@@ -19,6 +19,7 @@ namespace IssueManagerM.Models
         {
             this.Unit1 = new HashSet<Unit>();
             this.Unit2 = new HashSet<Unit>();
+            this.User = new HashSet<User>();
         }
     
         public int UnitID { get; set; }
@@ -28,5 +29,7 @@ namespace IssueManagerM.Models
         public virtual ICollection<Unit> Unit1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Unit> Unit2 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<User> User { get; set; }
     }
 }

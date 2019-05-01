@@ -25,8 +25,10 @@ namespace IssueManagerM.Models
         public string Password { get; set; }
         public string Phone { get; set; }
         public string Email { get; set; }
+        public Nullable<int> UnitID { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Role> Role { get; set; }
+        public virtual Unit Unit { get; set; }
     }
 }

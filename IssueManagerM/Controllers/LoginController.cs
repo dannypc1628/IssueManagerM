@@ -12,7 +12,7 @@ namespace IssueManagerM.Controllers
 {
     public class LoginController : Controller
     {
-        private IssueManagerEntities db = new IssueManagerEntities();
+        private IssueManagerEntities1 db = new IssueManagerEntities1();
         // GET: Login
         public ActionResult Index()
         {
@@ -29,22 +29,29 @@ namespace IssueManagerM.Controllers
                                  select  user.UserName).Count();
                 if (UserCount == 1)
                 {
-                    List<int> UserHadRole = (from role in db.Role
-                                            where role.User.Any(x=>x.UserID== LoginData.UserID)
-                                            select role.RoleID).ToList();
-                    string UserRole = "User";
-                    foreach(int a in UserHadRole)
-                    {
-                        UserRole += ","+a;
+                    //var UserHadRole = (from role in db.Role.Include(u=>u.User)
+                    //                        where role.User.Any(x=>x.UserID== LoginData.UserID)
+                    //                        select new { RoleID = role.RoleID ,UnitID = role.User.U }).ToList();
+                    var UserHadRole = from u in db.User.Include(u => u.Role)
+                                      select u;
+                    var UserUnitID = UserHadRole.FirstOrDefault().UnitID;
+                    string UserData = "" + UserUnitID+";User";
+                    foreach (var a in UserHadRole)
+                    {   
+                        UserData +=","+ a.Role.FirstOrDefault().RoleID;
                     }
                     FormsAuthenticationTicket Ticket = new FormsAuthenticationTicket(
-                        1, LoginData.UserID, DateTime.Now, DateTime.Now.AddMinutes(30), true, UserRole);
+                        1, LoginData.UserID, DateTime.Now, DateTime.Now.AddMinutes(30), true, UserData);
 
                     string EncryTicket = FormsAuthentication.Encrypt(Ticket);
                     Response.Cookies.Add(new HttpCookie(FormsAuthentication.FormsCookieName, EncryTicket));
                     
 
                     return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    ModelState.AddModelError("ErrorMessage", "帳號或密碼錯誤");
                 }
             }
             return View();
