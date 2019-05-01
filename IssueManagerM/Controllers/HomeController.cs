@@ -6,8 +6,10 @@ using System.Web.Mvc;
 using IssueManagerM.Models;
 using IssueManagerM.Models.ViewModels;
 
+
 namespace IssueManagerM.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         private IssueManagerEntities db = new IssueManagerEntities();

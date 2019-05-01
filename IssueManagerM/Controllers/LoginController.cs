@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Data.Entity;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 using IssueManagerM.Models;
 using IssueManagerM.Models.ViewModels;
 
@@ -22,11 +24,26 @@ namespace IssueManagerM.Controllers
         {
             if (ModelState.IsValid)
             {
-                var data = from user in db.User
-                           where user.UserID == LoginData.UserID && user.Password == LoginData.Password
-                           select user;
-                if (data.Count() == 1)
+                int UserCount = (from user in db.User
+                                 where user.UserID == LoginData.UserID && user.Password == LoginData.Password
+                                 select  user.UserName).Count();
+                if (UserCount == 1)
                 {
+                    List<int> UserHadRole = (from role in db.Role
+                                            where role.User.Any(x=>x.UserID== LoginData.UserID)
+                                            select role.RoleID).ToList();
+                    string UserRole = "User";
+                    foreach(int a in UserHadRole)
+                    {
+                        UserRole += ","+a;
+                    }
+                    FormsAuthenticationTicket Ticket = new FormsAuthenticationTicket(
+                        1, LoginData.UserID, DateTime.Now, DateTime.Now.AddMinutes(30), true, UserRole);
+
+                    string EncryTicket = FormsAuthentication.Encrypt(Ticket);
+                    Response.Cookies.Add(new HttpCookie(FormsAuthentication.FormsCookieName, EncryTicket));
+                    
+
                     return RedirectToAction("Index", "Home");
                 }
             }
@@ -66,6 +83,14 @@ namespace IssueManagerM.Controllers
                 }
             }
             return View();
+        }
+
+        [Authorize]
+        public ActionResult Logout()
+        {
+            FormsAuthentication.SignOut();
+
+            return RedirectToAction("Index");
         }
     }
 }
