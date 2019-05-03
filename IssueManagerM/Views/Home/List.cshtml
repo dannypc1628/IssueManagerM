@@ -16,6 +16,7 @@
                 <th>@Q.Title</th>
                 <th>@Q.CreateDate</th>
                 <th>@Q.State</th>
+                <th>@Html.ActionLink("內容","QuestionDetail",new { QID=Q.QID})</th>
             </tr>
         }
     </tbody>  

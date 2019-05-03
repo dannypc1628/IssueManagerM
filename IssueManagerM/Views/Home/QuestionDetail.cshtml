@@ -1,0 +1,29 @@
+﻿@model IssueManagerM.Models.ViewModels.QuestionDetailViewModel
+@{
+    ViewBag.Title = "QuestionDetail";
+    var q = Model.Question;
+
+}
+
+<h2>QuestionDetail</h2>
+
+
+<p>@q.Title</p>
+<p>@q.Asker</p>
+<p>@q.AskDate</p>
+<p>@q.CaseUnit</p>
+<p>@q.CaseOfficer</p>
+<p>@q.Content</p>
+
+<table>
+
+    @foreach( var step in Model.QuestionStepResults)
+    {
+        <tr>
+            <td>@step.CreateUser</td>
+            <td>@step.CreateDate</td>
+            <td>@step.CreateUserRole</td>
+            <td>@step.ActionID</td>
+        </tr>
+    }
+ </table>

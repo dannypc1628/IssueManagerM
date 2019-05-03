@@ -67,12 +67,29 @@ namespace IssueManagerM.Controllers
         {
             List<QuestionOutlineViewModel> data = (from q in db.Question.Include(q=>q.QuestionStepResult)
                        select new QuestionOutlineViewModel {
+                           QID=q.QuestionID,
                            Title =q.Title ,
                            CreateDate = q.QuestionStepResult.OrderBy(d=>d.CreateDate).FirstOrDefault().CreateDate ,
                            State =q.State.StateName
                        }).ToList();
             ViewData.Model = data;
             return View("List");
+        }
+        public ActionResult QuestionDetail(int QID)
+        {
+            Question question = (from q in db.Question
+                                where q.QuestionID == QID
+                                select q).Single();
+            List<QuestionStepResult> questionStepResults = (from q in db.QuestionStepResult
+                                                            where q.QuestionID == QID
+                                                            orderby q.CreateDate
+                                                            select q).ToList();
+            QuestionDetailViewModel data = new QuestionDetailViewModel
+            {
+                Question = question,
+                QuestionStepResults = questionStepResults
+            };
+            return View(data);
         }
         public ActionResult DoingList()
         {

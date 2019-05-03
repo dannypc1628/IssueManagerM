@@ -8,6 +8,8 @@ namespace IssueManagerM.Models.ViewModels
 {
     public class QuestionOutlineViewModel
     {
+        public int QID { get; set; }
+
         [Display(Name = "問題")]
         public string Title { get; set; }
 
