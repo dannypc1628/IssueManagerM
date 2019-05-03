@@ -37,8 +37,10 @@ namespace IssueManagerM.Controllers
                     var UserUnitID = UserHadRole.FirstOrDefault().UnitID;
                     string UserData = "" + UserUnitID+";User";
                     foreach (var a in UserHadRole)
-                    {   
-                        UserData +=","+ a.Role.FirstOrDefault().RoleID;
+                    {
+                        var r = a.Role.FirstOrDefault();
+                        if (r !=null)
+                            UserData +=","+Convert.ToString(r.RoleID) ;
                     }
                     FormsAuthenticationTicket Ticket = new FormsAuthenticationTicket(
                         1, LoginData.UserID, DateTime.Now, DateTime.Now.AddMinutes(30), true, UserData);
