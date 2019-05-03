@@ -66,7 +66,11 @@ namespace IssueManagerM.Controllers
         public ActionResult DoList()
         {
             List<QuestionOutlineViewModel> data = (from q in db.Question.Include(q=>q.QuestionStepResult)
-                       select new QuestionOutlineViewModel { Title=q.Title }).ToList();
+                       select new QuestionOutlineViewModel {
+                           Title =q.Title ,
+                           CreateDate = q.QuestionStepResult.OrderBy(d=>d.CreateDate).FirstOrDefault().CreateDate ,
+                           State =q.State.StateName
+                       }).ToList();
             ViewData.Model = data;
             return View("List");
         }

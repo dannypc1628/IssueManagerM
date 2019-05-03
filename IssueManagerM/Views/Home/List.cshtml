@@ -1,14 +1,22 @@
-﻿@model IssueManagerM.Models.ViewModels.QuestionOutlineViewModel
+﻿@model IEnumerable<IssueManagerM.Models.ViewModels.QuestionOutlineViewModel>
 
 
 <table>
     <thead>
-
+        <tr>
+            <th>@Html.DisplayNameFor(m=>m.Title)</th>
+            <th>@Html.DisplayNameFor(m=>m.CreateDate)</th>
+            <th>@Html.DisplayNameFor(m=>m.State)</th>
+        </tr>
     </thead>
     <tbody>
-        @foreach (var Itme in Model)
+        @foreach (var Q in Model)
         {
-
+            <tr>
+                <th>@Q.Title</th>
+                <th>@Q.CreateDate</th>
+                <th>@Q.State</th>
+            </tr>
         }
     </tbody>  
 </table>
