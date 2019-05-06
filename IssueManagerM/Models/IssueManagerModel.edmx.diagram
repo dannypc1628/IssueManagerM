@@ -18,6 +18,7 @@
         <AssociationConnector Association="IssueManagerModel.ParentUnit" ManuallyRouted="false" />
         <AssociationConnector Association="IssueManagerModel.UserRole" ManuallyRouted="false" />
         <AssociationConnector Association="IssueManagerModel.FK__User__UnitID__6E01572D" />
+        <AssociationConnector Association="IssueManagerModel.FK__QuestionS__Creat__75A278F5" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

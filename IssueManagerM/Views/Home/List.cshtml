@@ -4,9 +4,9 @@
 <table>
     <thead>
         <tr>
-            <th>@Html.DisplayNameFor(m=>m.Title)</th>
-            <th>@Html.DisplayNameFor(m=>m.CreateDate)</th>
-            <th>@Html.DisplayNameFor(m=>m.State)</th>
+            <th>@Html.DisplayNameFor(m => m.Title)</th>
+            <th>@Html.DisplayNameFor(m => m.CreateDate)</th>
+            <th>@Html.DisplayNameFor(m => m.State)</th>
         </tr>
     </thead>
     <tbody>
@@ -16,9 +16,12 @@
                 <th>@Q.Title</th>
                 <th>@Q.CreateDate</th>
                 <th>@Q.State</th>
-                <th>@Html.ActionLink("內容","QuestionDetail",new { QID=Q.QID})</th>
+                <th>@Html.ActionLink("內容", "QuestionDetail", new { QID = Q.QID })</th>
             </tr>
         }
-    </tbody>  
+    </tbody>
 </table>
+
+
+
 

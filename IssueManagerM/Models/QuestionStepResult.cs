@@ -24,5 +24,6 @@ namespace IssueManagerM.Models
     
         public virtual Action Action { get; set; }
         public virtual Question Question { get; set; }
+        public virtual User User { get; set; }
     }
 }

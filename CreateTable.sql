@@ -15,7 +15,7 @@ Create Table [User]
 )
 Create Table [ParentUnit]
 (
-	ChildID int  REFERENCES [Unit](UnitID) not null UNIQUE,
+	ChildID int PRIMARY KEY REFERENCES [Unit](UnitID) not null ,
 	ParentID int REFERENCES [Unit](UnitID) not null 
 )
 Create Table [Role]
@@ -26,7 +26,8 @@ Create Table [Role]
 Create Table [UserRole]
 (
 	[UserID] nchar(10) REFERENCES [User](UserID) not null,
-	[RoleID] int REFERENCES [Role](RoleID) not null
+	[RoleID] int REFERENCES [Role](RoleID) not null,
+	CONSTRAINT PK_UserRole PRIMARY KEY (UserID,RoleID)
 )
 
 Create Table [State]
@@ -55,7 +56,7 @@ Create Table [QuestionStepResult]
 (
 	QuestionStepResultID int PRIMARY KEY IDENTITY(1,1),
 	CreateDate datetime not null,
-	CreateUser nchar(10) not null,
+	CreateUser nchar(10) REFERENCES [User](UserID) not null,
 	CreateUserRole int not null,
 	[Content] nvarchar(50),
 	[ActionID] int REFERENCES [Action](ActionID) not null,

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace IssueManagerM.Models.ViewModels
 {
@@ -10,5 +11,10 @@ namespace IssueManagerM.Models.ViewModels
         public Question Question { get; set; }
 
         public List<QuestionStepResult> QuestionStepResults { get; set; }
+
+        public List<SelectListItem> UnitList { get; set; }
+
+        public List<SelectListItem> Officers { get; set; }
+
     }
 }

@@ -7,6 +7,8 @@ using System.Web.Mvc;
 using System.Web.Security;
 using IssueManagerM.Models;
 using IssueManagerM.Models.ViewModels;
+using System.Data.Entity.Validation;
+using System.Text;
 
 namespace IssueManagerM.Controllers
 {
@@ -47,8 +49,7 @@ namespace IssueManagerM.Controllers
 
                     string EncryTicket = FormsAuthentication.Encrypt(Ticket);
                     Response.Cookies.Add(new HttpCookie(FormsAuthentication.FormsCookieName, EncryTicket));
-                    
-
+                                    
                     return RedirectToAction("Index", "Home");
                 }
                 else
@@ -72,18 +73,23 @@ namespace IssueManagerM.Controllers
                 var data = from user in db.User
                            where user.UserID == SignUpData.UserID
                            select user.UserID;
+                Role role = db.Role.Find(6);
                 if (data.Count() == 0)
                 {
-                    db.User.Add(new User()
+                    User user = new User()
                     {
                         UserID = SignUpData.UserID,
                         UserName = SignUpData.Name,
                         Password = SignUpData.Password,
                         Phone = SignUpData.Phone,
-                        Email = SignUpData.Email
-                    });
+                        Email = SignUpData.Email,
+                        
+                    };
+                    user.Role.Add(role);
+                    db.User.Add(user);
                     db.SaveChanges();
 
+                    
                     return RedirectToAction("Index");
                 }
                 else

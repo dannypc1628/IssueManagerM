@@ -1,5 +1,7 @@
 ﻿@model IssueManagerM.Models.ViewModels.QuestionDetailViewModel
 @{
+    /**/
+
     ViewBag.Title = "QuestionDetail";
     var q = Model.Question;
 
@@ -17,13 +19,27 @@
 
 <table>
 
-    @foreach( var step in Model.QuestionStepResults)
+    @foreach (var step in Model.QuestionStepResults)
     {
         <tr>
             <td>@step.CreateUser</td>
             <td>@step.CreateDate</td>
             <td>@step.CreateUserRole</td>
+            <td>@step.Content</td>
             <td>@step.ActionID</td>
         </tr>
     }
- </table>
+</table>
+
+@using (Html.BeginForm())
+{
+    @Html.Hidden("QID",Model.Question.QuestionID)
+    @Html.Label("決定指派至單位：")
+    @Html.DropDownList("UnitID", Model.UnitList)
+    @Html.Label("說明：")
+    @Html.TextBox("Content")
+    <input type="submit" value="確定" />
+
+}
+
+@Html.ActionLink("取消，並返回首頁","Index")

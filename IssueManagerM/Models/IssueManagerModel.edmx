@@ -12,8 +12,6 @@
           <Property Name="ActionID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ActionName" Type="nvarchar" MaxLength="10" Nullable="false" />
         </EntityType>
-        <!--產生期間發現錯誤:
-警告 6002: 資料表/檢視 'IssueManager.dbo.ParentUnit' 未定義主索引鍵。已推斷此索引鍵，並將定義建立成唯讀的資料表/檢視。-->
         <EntityType Name="ParentUnit">
           <Key>
             <PropertyRef Name="ChildID" />
@@ -79,8 +77,6 @@
           <Property Name="Email" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="UnitID" Type="int" />
         </EntityType>
-        <!--產生期間發現錯誤:
-警告 6002: 資料表/檢視 'IssueManager.dbo.UserRole' 未定義主索引鍵。已推斷此索引鍵，並將定義建立成唯讀的資料表/檢視。-->
         <EntityType Name="UserRole">
           <Key>
             <PropertyRef Name="UserID" />
@@ -137,6 +133,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK__QuestionS__Creat__75A278F5">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="QuestionStepResult" Type="Self.QuestionStepResult" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="QuestionStepResult">
+              <PropertyRef Name="CreateUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK__QuestionS__Quest__628FA481">
           <End Role="Question" Type="Self.Question" Multiplicity="1" />
           <End Role="QuestionStepResult" Type="Self.QuestionStepResult" Multiplicity="*" />
@@ -187,24 +195,14 @@
         </Association>
         <EntityContainer Name="IssueManagerModelStoreContainer">
           <EntitySet Name="Action" EntityType="Self.Action" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ParentUnit" EntityType="Self.ParentUnit" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Question" EntityType="Self.Question" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="QuestionStepResult" EntityType="Self.QuestionStepResult" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Role" EntityType="Self.Role" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="State" EntityType="Self.State" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Unit" EntityType="Self.Unit" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="ParentUnit" EntityType="Self.ParentUnit" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [ParentUnit].[ChildID] AS [ChildID], 
-    [ParentUnit].[ParentID] AS [ParentID]
-    FROM [dbo].[ParentUnit] AS [ParentUnit]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="UserRole" EntityType="Self.UserRole" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [UserRole].[UserID] AS [UserID], 
-    [UserRole].[RoleID] AS [RoleID]
-    FROM [dbo].[UserRole] AS [UserRole]</DefiningQuery>
-          </EntitySet>
+          <EntitySet Name="UserRole" EntityType="Self.UserRole" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK__ParentUni__Child__5165187F" Association="Self.FK__ParentUni__Child__5165187F">
             <End Role="Unit" EntitySet="Unit" />
             <End Role="ParentUnit" EntitySet="ParentUnit" />
@@ -219,6 +217,10 @@
           </AssociationSet>
           <AssociationSet Name="FK__QuestionS__Actio__619B8048" Association="Self.FK__QuestionS__Actio__619B8048">
             <End Role="Action" EntitySet="Action" />
+            <End Role="QuestionStepResult" EntitySet="QuestionStepResult" />
+          </AssociationSet>
+          <AssociationSet Name="FK__QuestionS__Creat__75A278F5" Association="Self.FK__QuestionS__Creat__75A278F5">
+            <End Role="User" EntitySet="User" />
             <End Role="QuestionStepResult" EntitySet="QuestionStepResult" />
           </AssociationSet>
           <AssociationSet Name="FK__QuestionS__Quest__628FA481" Association="Self.FK__QuestionS__Quest__628FA481">
@@ -278,6 +280,7 @@
           <Property Name="QuestionID" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Action" Relationship="Self.FK__QuestionS__Actio__619B8048" FromRole="QuestionStepResult" ToRole="Action" />
           <NavigationProperty Name="Question" Relationship="Self.FK__QuestionS__Quest__628FA481" FromRole="QuestionStepResult" ToRole="Question" />
+          <NavigationProperty Name="User" Relationship="IssueManagerModel.FK__QuestionS__Creat__75A278F5" FromRole="QuestionStepResult" ToRole="User" />
         </EntityType>
         <EntityType Name="Role">
           <Key>
@@ -317,6 +320,7 @@
           <NavigationProperty Name="Role" Relationship="Self.UserRole" FromRole="User" ToRole="Role" />
           <Property Name="UnitID" Type="Int32" />
           <NavigationProperty Name="Unit" Relationship="IssueManagerModel.FK__User__UnitID__6E01572D" FromRole="User" ToRole="Unit" />
+          <NavigationProperty Name="QuestionStepResult" Relationship="IssueManagerModel.FK__QuestionS__Creat__75A278F5" FromRole="User" ToRole="QuestionStepResult" />
         </EntityType>
         <Association Name="FK__QuestionS__Actio__619B8048">
           <End Role="Action" Type="Self.Action" Multiplicity="1" />
@@ -394,6 +398,10 @@
             <End Role="Unit" EntitySet="Unit" />
             <End Role="User" EntitySet="User" />
           </AssociationSet>
+          <AssociationSet Name="FK__QuestionS__Creat__75A278F5" Association="IssueManagerModel.FK__QuestionS__Creat__75A278F5">
+            <End Role="User" EntitySet="User" />
+            <End Role="QuestionStepResult" EntitySet="QuestionStepResult" />
+          </AssociationSet>
         </EntityContainer>
         <Association Name="FK__User__UnitID__6E01572D">
           <End Type="IssueManagerModel.Unit" Role="Unit" Multiplicity="0..1" />
@@ -404,6 +412,18 @@
             </Principal>
             <Dependent Role="User">
               <PropertyRef Name="UnitID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__QuestionS__Creat__75A278F5">
+          <End Type="IssueManagerModel.User" Role="User" Multiplicity="1" />
+          <End Type="IssueManagerModel.QuestionStepResult" Role="QuestionStepResult" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="QuestionStepResult">
+              <PropertyRef Name="CreateUser" />
             </Dependent>
           </ReferentialConstraint>
         </Association>

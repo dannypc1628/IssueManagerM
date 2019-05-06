@@ -63,8 +63,12 @@ namespace IssueManagerM.Controllers
 
             return View();
         }
-        public ActionResult DoList()
+        public ActionResult DoList(string WhichState)
         {
+            //switch(WhichState) 
+            //{
+            //    case:"NeedDo"
+            //}
             List<QuestionOutlineViewModel> data = (from q in db.Question.Include(q=>q.QuestionStepResult)
                        select new QuestionOutlineViewModel {
                            QID=q.QuestionID,
@@ -84,13 +88,44 @@ namespace IssueManagerM.Controllers
                                                             where q.QuestionID == QID
                                                             orderby q.CreateDate
                                                             select q).ToList();
+            
+            List<SelectListItem> units = (from u in db.Unit
+                                where u.Unit1.FirstOrDefault().UnitID == u.Unit2.FirstOrDefault().UnitID
+                                select new SelectListItem {Text=u.UnitName,Value=u.UnitID.ToString() }).ToList();
+
             QuestionDetailViewModel data = new QuestionDetailViewModel
             {
                 Question = question,
-                QuestionStepResults = questionStepResults
+                QuestionStepResults = questionStepResults,
+                UnitList =units
             };
+
+
             return View(data);
         }
+        [HttpPost]
+        public ActionResult QuestionDetail(int QID,int UnitID,string Content)
+        {
+            string UnitName = db.Unit.Find(UnitID).UnitName;
+            Question question = db.Question.Find(QID);
+            question.StateID = question.StateID + 1;
+            question.CaseUnit = UnitID;
+
+            QuestionStepResult result = new QuestionStepResult
+            {
+                QuestionID = QID,
+                
+                CreateDate = DateTime.Now,
+                Content = "指派至" + UnitName + " " + Content,
+                CreateUser = HttpContext.User.Identity.Name,
+                ActionID = 2,
+
+            };
+            db.QuestionStepResult.Add(result);
+            db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
         public ActionResult DoingList()
         {
 

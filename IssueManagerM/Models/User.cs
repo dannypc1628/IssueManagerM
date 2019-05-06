@@ -18,6 +18,7 @@ namespace IssueManagerM.Models
         public User()
         {
             this.Role = new HashSet<Role>();
+            this.QuestionStepResult = new HashSet<QuestionStepResult>();
         }
     
         public string UserID { get; set; }
@@ -30,5 +31,7 @@ namespace IssueManagerM.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Role> Role { get; set; }
         public virtual Unit Unit { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<QuestionStepResult> QuestionStepResult { get; set; }
     }
 }
