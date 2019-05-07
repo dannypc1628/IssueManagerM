@@ -31,19 +31,26 @@ namespace IssueManagerM.Controllers
                                  select  user.UserName).Count();
                 if (UserCount == 1)
                 {
-                    //var UserHadRole = (from role in db.Role.Include(u=>u.User)
-                    //                        where role.User.Any(x=>x.UserID== LoginData.UserID)
-                    //                        select new { RoleID = role.RoleID ,UnitID = role.User.U }).ToList();
-                    var UserHadRole = from u in db.User.Include(u => u.Role)
-                                      select u;
-                    var UserUnitID = UserHadRole.FirstOrDefault().UnitID;
-                    string UserData = "" + UserUnitID+";User";
+                    var UserHadRole = (from role in db.Role.Include(u => u.User)
+                                       where role.User.Any(x => x.UserID == LoginData.UserID)
+                                       select role).ToList();
+                    //var UserHadRole = from u in db.User.Include(u => u.Role)
+                    //                  orderby u.Role.FirstOrDefault().RoleID
+                    //                  select u;
+                    var UserUnitID = UserHadRole.FirstOrDefault().User.FirstOrDefault().UnitID;
+                    Session["UseRole"] = UserHadRole.FirstOrDefault().RoleName;
+                    string UserData = "" + UserUnitID+";";
                     foreach (var a in UserHadRole)
                     {
-                        var r = a.Role.FirstOrDefault();
+                        var r = a.RoleName;
                         if (r !=null)
-                            UserData +=","+Convert.ToString(r.RoleID) ;
+                            UserData +=r + ",";
                     }
+                    if (UserData.EndsWith(","))
+                    {
+                        UserData = UserData.Remove(UserData.Length-1);
+                    }
+
                     FormsAuthenticationTicket Ticket = new FormsAuthenticationTicket(
                         1, LoginData.UserID, DateTime.Now, DateTime.Now.AddMinutes(30), true, UserData);
 
