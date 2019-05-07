@@ -1,0 +1,23 @@
+﻿@model List<IssueManagerM.Models.Role>
+@{
+    ViewBag.Title = "ChangeRole";
+}
+
+<h2>ChangeRole</h2>
+@using (Html.BeginForm())
+{
+    foreach (var a in Model)
+    {
+        if (a.RoleName == (string)Session["UseRole"])
+        {
+            @Html.RadioButton("RoleID", a.RoleID, true)@a.RoleName
+        }
+        else
+        {
+            @Html.RadioButton("RoleID", a.RoleID)@a.RoleName
+        }
+    }
+    <input type="submit" value="送出">
+}
+
+
