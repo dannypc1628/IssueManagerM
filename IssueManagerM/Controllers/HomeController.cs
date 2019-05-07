@@ -63,21 +63,55 @@ namespace IssueManagerM.Controllers
 
             return View();
         }
-        public ActionResult DoList(string WhichState)
+        public ActionResult DoList(string Mode)
         {
-            //switch(WhichState) 
-            //{
-            //    case:"NeedDo"
-            //}
-            List<QuestionOutlineViewModel> data = (from q in db.Question.Include(q=>q.QuestionStepResult)
-                       select new QuestionOutlineViewModel {
-                           QID=q.QuestionID,
-                           Title =q.Title ,
-                           CreateDate = q.QuestionStepResult.OrderBy(d=>d.CreateDate).FirstOrDefault().CreateDate ,
-                           State =q.State.StateName
-                       }).ToList();
-            ViewData.Model = data;
-            return View("List");
+           
+            int State = 1;
+            switch (Session["UseRole"])
+            {
+                case "FB長":
+                    State = 2;
+                    break;
+                case "組長":
+                    State = 3;
+                    break;
+                case "科長":
+                    State = 4;
+                    break;
+                case "科員":
+                    State = 5;
+                    break;
+            }
+            List<QuestionOutlineViewModel> data;
+            if (Mode == "ToDo")
+            {
+                data = (from q in db.Question.Include(q => q.QuestionStepResult)
+                                                       where q.StateID == State
+                                                       select new QuestionOutlineViewModel
+                                                       {
+                                                           QID = q.QuestionID,
+                                                           Title = q.Title,
+                                                           CreateDate = q.QuestionStepResult.OrderBy(d => d.CreateDate).FirstOrDefault().CreateDate,
+                                                           State = q.State.StateName
+                                                       }).ToList();
+                ViewData.Model = data;
+            }
+            if(Mode == "Doing")
+            {
+                data = (from q in db.Question.Include(q => q.QuestionStepResult)
+                        where q.StateID > State
+                        select new QuestionOutlineViewModel
+                        {
+                            QID = q.QuestionID,
+                            Title = q.Title,
+                            CreateDate = q.QuestionStepResult.OrderBy(d => d.CreateDate).FirstOrDefault().CreateDate,
+                            State = q.State.StateName
+                        }).ToList();  
+                ViewData.Model = data;
+            }
+
+            ViewBag.Mode = Mode;
+            return PartialView("List");
         }
         public ActionResult QuestionDetail(int QID)
         {

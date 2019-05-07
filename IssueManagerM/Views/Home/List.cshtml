@@ -1,26 +1,39 @@
 ﻿@model IEnumerable<IssueManagerM.Models.ViewModels.QuestionOutlineViewModel>
 
+@if (ViewBag.Mode == "ToDo")
+{
+    <h3>待處理 總計：@(Model.Count())個</h3>
+}
+@if (ViewBag.Mode == "Doing")
+{
+    <h3>正在進行中 總計：@(Model.Count())個</h3>
+}
+@if(Model != null) { 
+    if (Model.Count() != 0)
+    {
+        <table>
+            <thead>
+                <tr>
+                    <th>@Html.DisplayNameFor(m => m.Title)</th>
+                    <th>@Html.DisplayNameFor(m => m.CreateDate)</th>
+                    <th>@Html.DisplayNameFor(m => m.State)</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var Q in Model)
+                {
+                    <tr>
+                        <th>@Q.Title</th>
+                        <th>@Q.CreateDate</th>
+                        <th>@Q.State</th>
+                        <th>@Html.ActionLink("內容", "QuestionDetail", new { QID = Q.QID })</th>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+}
 
-<table>
-    <thead>
-        <tr>
-            <th>@Html.DisplayNameFor(m => m.Title)</th>
-            <th>@Html.DisplayNameFor(m => m.CreateDate)</th>
-            <th>@Html.DisplayNameFor(m => m.State)</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var Q in Model)
-        {
-            <tr>
-                <th>@Q.Title</th>
-                <th>@Q.CreateDate</th>
-                <th>@Q.State</th>
-                <th>@Html.ActionLink("內容", "QuestionDetail", new { QID = Q.QID })</th>
-            </tr>
-        }
-    </tbody>
-</table>
 
 
 

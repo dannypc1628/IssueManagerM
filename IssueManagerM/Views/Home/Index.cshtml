@@ -5,4 +5,6 @@
 
 <h2>Index</h2>
 
-@Html.Action("DoList", "Home")
+@Html.Action("DoList", "Home",new { Mode="ToDo" })
+
+@Html.Action("DoList", "Home",new { Mode="Doing" })
